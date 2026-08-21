@@ -1,0 +1,10 @@
+# 파이썬 라이브러리
+
+pyserial
+smbus2
+requests
+paddleocr==2.7.3
+paddlepaddle==2.6.2
+numpy<2
+opencv-python-headless
+OPi.GPIO
