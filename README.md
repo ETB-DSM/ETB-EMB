@@ -7,7 +7,7 @@ Orange Pi 5 Plus에서 센서 데이터를 읽고, 장애물 판단과 진동 �
 
 - Board: Orange Pi 5 Plus
 - Language: Python
-- OS: Debian 또는 Ubuntu Linux
+- OS: Ubuntu Linux
 - Main Devices:
   - TF-Luna LiDAR
   - TCA9548A I2C Multiplexer
