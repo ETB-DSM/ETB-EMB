@@ -13,7 +13,7 @@ DEVICE_ID = "aicane_001"
 NAVIGATION_SESSION_ID = "nav_001"
 
 # 백엔드 서버
-SERVER_BASE_URL = "http://localhost:8080"
+SERVER_BASE_URL = "https://ai-cane.heijionline.com"
 API_TIMEOUT_SEC = 3.0
 
 # 메인 반복 루프
