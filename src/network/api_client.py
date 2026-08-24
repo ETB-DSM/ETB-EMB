@@ -9,6 +9,16 @@ import requests
 from config import API_TIMEOUT_SEC, SERVER_BASE_URL
 
 
+def _status_to_bool(value):
+    if isinstance(value, bool):
+        return value
+
+    if value is None:
+        return None
+
+    return str(value).strip().lower() in ["ok", "true", "1", "yes"]
+
+
 def request_api(method, path, json_data=None, params=None):
     url = f"{SERVER_BASE_URL}{path}"
 
@@ -67,17 +77,15 @@ def update_device_status(
     timestamp,
 ):
     data = {
-        "userId": user_id,
         "deviceId": device_id,
         "battery": battery,
-        "lidarStatus": lidar_status,
-        "cameraStatus": camera_status,
-        "gpsStatus": gps_status,
-        "networkStatus": network_status,
-        "timestamp": timestamp,
+        "lidarOk": _status_to_bool(lidar_status),
+        "cameraOk": _status_to_bool(camera_status),
+        "gpsOk": _status_to_bool(gps_status),
+        "networkOk": _status_to_bool(network_status),
     }
 
-    return request_api("POST", "/api/devices/status", json_data=data)
+    return request_api("POST", "/api/device/status", json_data=data)
 
 
 def save_ocr_result(
@@ -91,17 +99,14 @@ def save_ocr_result(
     timestamp,
 ):
     data = {
-        "userId": user_id,
-        "deviceId": device_id,
         "destinationId": destination_id,
         "recognizedText": recognized_text,
         "targetText": target_text,
-        "confidence": confidence,
         "matched": matched,
-        "timestamp": timestamp,
+        "confidence": confidence,
     }
 
-    return request_api("POST", "/api/ocr-results", json_data=data)
+    return request_api("POST", "/api/ocr/results", json_data=data)
 
 
 def save_location(user_id, device_id, latitude, longitude, timestamp):
@@ -113,17 +118,17 @@ def save_location(user_id, device_id, latitude, longitude, timestamp):
         "timestamp": timestamp,
     }
 
-    return request_api("POST", "/api/locations", json_data=data)
+    return request_api("POST", "/api/location", json_data=data)
 
 
 def create_destination(user_id, name, target_text, latitude, longitude, radius):
     data = {
         "userId": user_id,
         "name": name,
-        "targetText": target_text,
         "latitude": latitude,
         "longitude": longitude,
-        "radius": radius,
+        "radiusM": radius,
+        "targetText": target_text,
     }
 
     return request_api("POST", "/api/destinations", json_data=data)
@@ -150,7 +155,7 @@ def get_destination_list(user_id):
 
 
 def check_device_status(device_id):
-    path = f"/api/devices/{device_id}/status"
+    path = f"/api/device/status/{device_id}"
     return request_api("GET", path)
 
 
@@ -190,12 +195,10 @@ def create_navigation_session(
     timestamp,
 ):
     data = {
-        "userId": user_id,
-        "deviceId": device_id,
         "destinationId": destination_id,
+        "deviceId": device_id,
         "startLatitude": start_latitude,
         "startLongitude": start_longitude,
-        "timestamp": timestamp,
     }
 
     return request_api("POST", "/api/navigation/sessions", json_data=data)
@@ -215,7 +218,6 @@ def update_navigation_session_status(
     data = {
         "status": status,
         "reason": reason,
-        "timestamp": timestamp,
     }
 
     path = f"/api/navigation/sessions/{navigation_session_id}/status"

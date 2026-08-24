@@ -85,11 +85,15 @@ def now_iso():
 def get_first_destination():
     response = get_destination_list(USER_ID)
 
-    if response.get("status") != "OK":
+    if isinstance(response, list):
+        destinations = response
+    elif isinstance(response, dict) and response.get("status") == "ERROR":
         return None
-
-    data = response.get("data") or {}
-    destinations = data.get("destinations") or []
+    elif isinstance(response, dict):
+        data = response.get("data") or {}
+        destinations = data.get("destinations") or []
+    else:
+        destinations = []
 
     if not destinations:
         return None
@@ -269,7 +273,12 @@ def main():
                 time.sleep(LOOP_INTERVAL_SEC)
                 continue
 
-            instruction_data = instruction_response.get("data")
+            if instruction_response.get("errorCode"):
+                vibration.play_pattern(PATTERN_NETWORK_ERROR)
+                time.sleep(LOOP_INTERVAL_SEC)
+                continue
+
+            instruction_data = instruction_response.get("data", instruction_response)
             instruction = parse_navigation_instruction(instruction_data)
 
             navigation_pattern = get_navigation_pattern(instruction)

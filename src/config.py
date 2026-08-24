@@ -32,6 +32,7 @@ GPS_TIMEOUT_SEC = 1.0
 
 # LiDAR
 LIDAR_I2C_BUS_NUMBER = 2
+TF_LUNA_I2C_ADDRESS = 0x10
 LIDAR_CHANNELS = {
     "front": 0,
     "left": 1,

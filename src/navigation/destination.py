@@ -61,7 +61,10 @@ def is_valid_location(location):
 def get_destination_radius(destination):
     radius = destination.get(
         "radius",
-        destination.get("arrival_radius_m", DEFAULT_ARRIVAL_RADIUS_M),
+        destination.get(
+            "radiusM",
+            destination.get("arrival_radius_m", DEFAULT_ARRIVAL_RADIUS_M),
+        ),
     )
 
     try:

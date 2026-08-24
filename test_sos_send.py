@@ -23,10 +23,10 @@ def now_kst_iso():
 
 
 def main():
-    payload_info = {
-        "user_id": USER_ID,
-        "device_id": DEVICE_ID,
-        "event_type": "fall_detected",
+    payload = {
+        "userId": USER_ID,
+        "deviceId": DEVICE_ID,
+        "eventType": "fall_detected",
         "latitude": 36.3504,
         "longitude": 127.3845,
         "battery": 80,
@@ -35,16 +35,16 @@ def main():
 
     print("sos send test started")
     print("request:")
-    print(payload_info)
+    print(payload)
 
     response = send_sos(
-        user_id=payload_info["user_id"],
-        device_id=payload_info["device_id"],
-        event_type=payload_info["event_type"],
-        latitude=payload_info["latitude"],
-        longitude=payload_info["longitude"],
-        battery=payload_info["battery"],
-        timestamp=payload_info["timestamp"],
+        user_id=payload["userId"],
+        device_id=payload["deviceId"],
+        event_type=payload["eventType"],
+        latitude=payload["latitude"],
+        longitude=payload["longitude"],
+        battery=payload["battery"],
+        timestamp=payload["timestamp"],
     )
 
     print("response:")
